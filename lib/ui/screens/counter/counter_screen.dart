@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm_simple/ui/screens/counter/viewmodel/viewmodel.dart';
 import 'package:provider/provider.dart';
+
+import '../../../domain/blocs/users_bloc.dart';
 
 const verticalSpace = SizedBox(height: 8);
 
@@ -32,8 +33,15 @@ class _AgeTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = context.select((ViewModel vm) => vm.state.ageTitle);
-    return Text(title);
+    final bloc = context.read<UsersBloc>();
+    return StreamBuilder<UsersState>(
+      initialData: bloc.state,
+      stream: bloc.stream,
+      builder: (context, snapshot) {
+        final age = snapshot.requireData.currentUser.age;
+        return Text("$age");
+      },
+    );
   }
 }
 
@@ -42,9 +50,9 @@ class _AgeIncrementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<ViewModel>();
+    final bloc = context.read<UsersBloc>();
     return ElevatedButton(
-      onPressed: viewModel.onIncrementButtonPressed,
+      onPressed: bloc.incrementAge,
       child: const Text('+'),
     );
   }
@@ -55,9 +63,9 @@ class _AgeDecrementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<ViewModel>();
+    final bloc = context.read<UsersBloc>();
     return ElevatedButton(
-      onPressed: viewModel.onDecrementButtonPressed,
+      onPressed: bloc.decrementAge,
       child: const Text('-'),
     );
   }

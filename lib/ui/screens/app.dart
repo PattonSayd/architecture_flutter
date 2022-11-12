@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm_simple/ui/screens/counter/viewmodel/viewmodel.dart';
+import 'package:mvvm_simple/ui/screens/counter/counter_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'counter/counter_screen.dart';
+import '../../domain/blocs/users_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChangeNotifierProvider(
-        create: (_) => ViewModel(),
+      home: Provider(
+        create: (_) => UsersBloc(),
         child: const CounterScreen(),
       ),
     );
