@@ -36,9 +36,7 @@ class UsersState {
 
 class UsersBloc {
   final _userDataProvider = UserDataProvider();
-  var _state = UsersState(
-    currentUser: User(0),
-  );
+  var _state = UsersState(currentUser: User(0));
 
   final _stateController = StreamController<UsersState>.broadcast();
 
