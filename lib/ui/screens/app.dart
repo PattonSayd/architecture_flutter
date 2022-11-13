@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Provider(
         create: (_) => UsersBloc(),
+        dispose: (_, value) => value.close(),
         child: const CounterScreen(),
       ),
     );
