@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/blocs/users_bloc.dart';
+import '../../../domain/blocs/users_cubit.dart';
 
 const verticalSpace = SizedBox(height: 8);
 
@@ -33,7 +33,7 @@ class _AgeTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<UsersBloc>();
+    final bloc = context.read<UsersCubit>();
     return StreamBuilder<UsersState>(
       initialData: bloc.state,
       stream: bloc.stream,
@@ -50,7 +50,7 @@ class _AgeIncrementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<UsersBloc>();
+    final bloc = context.read<UsersCubit>();
     return ElevatedButton(
       onPressed: bloc.incrementAge,
       child: const Text('+'),
@@ -63,7 +63,7 @@ class _AgeDecrementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<UsersBloc>();
+    final bloc = context.read<UsersCubit>();
     return ElevatedButton(
       onPressed: bloc.decrementAge,
       child: const Text('-'),

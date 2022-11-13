@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:bloc/bloc.dart';
+
 import '../data_providers/user_data_provider.dart';
 import '../entity/user.dart';
 
@@ -34,45 +36,31 @@ class UsersState {
   }
 }
 
-class UsersBloc {
+class UsersCubit extends Cubit<UsersState> {
   final _userDataProvider = UserDataProvider();
-  var _state = UsersState(currentUser: User(0));
 
-  final _stateController = StreamController<UsersState>.broadcast();
-
-  UsersState get state => _state;
-  Stream<UsersState> get stream => _stateController.stream;
-
-  UsersBloc() {
+  UsersCubit() : super(UsersState(currentUser: User(0))) {
     _initialize();
-  }
-
-  void updateState(UsersState state) {
-    if (_state == state) return;
-    _state = state;
-    _stateController.add(state);
   }
 
   Future<void> _initialize() async {
     final user = await _userDataProvider.loadValue();
-    updateState(_state.copyWith(currentUser: user));
+    final newState = state.copyWith(currentUser: user);
+    emit(newState);
   }
 
   void incrementAge() {
-    var user = _state.currentUser;
+    var user = state.currentUser;
     user = user.copyWith(age: user.age + 1);
-    updateState(_state.copyWith(currentUser: user));
+    final newState = state.copyWith(currentUser: user);
+    emit(newState);
     _userDataProvider.saveValue(user);
   }
 
   void decrementAge() {
-    var user = _state.currentUser;
+    var user = state.currentUser;
     user = user.copyWith(age: user.age - 1);
-    updateState(_state.copyWith(currentUser: user));
+    emit(state.copyWith(currentUser: user));
     _userDataProvider.saveValue(user);
-  }
-
-  void close() {
-    _stateController.close();
   }
 }
