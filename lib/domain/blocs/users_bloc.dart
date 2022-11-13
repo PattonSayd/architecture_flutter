@@ -48,9 +48,7 @@ class UsersInitializeEvent implements UsersEvents {}
 
 class UsersBloc {
   final _userDataProvider = UserDataProvider();
-  var _state = UsersState(
-    currentUser: User(0),
-  );
+  var _state = UsersState(currentUser: User(0));
 
   final _eventController = StreamController<UsersEvents>.broadcast();
   late final Stream<UsersState> _stateStream;
@@ -91,5 +89,9 @@ class UsersBloc {
       await _userDataProvider.saveValue(user);
       yield UsersState(currentUser: user);
     }
+  }
+
+  void close() {
+    _eventController.close();
   }
 }
