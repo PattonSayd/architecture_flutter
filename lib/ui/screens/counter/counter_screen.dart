@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/blocs/users_bloc.dart';
 
@@ -9,18 +9,24 @@ class CounterScreen extends StatelessWidget {
   const CounterScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              _AgeTitleWidget(),
-              verticalSpace,
-              _AgeIncrementWidget(),
-              verticalSpace,
-              _AgeDecrementWidget(),
-            ],
+    return BlocListener<UsersBloc, UsersState>(
+      // BlocListener срабатывает на изменения стейта без перерисовки виджетов, like didChangeDependency
+      listener: (context, state) {
+        print(state.currentUser.age);
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                _AgeTitleWidget(),
+                verticalSpace,
+                _AgeIncrementWidget(),
+                verticalSpace,
+                _AgeDecrementWidget(),
+              ],
+            ),
           ),
         ),
       ),
@@ -33,12 +39,14 @@ class _AgeTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<UsersBloc>();
-    return StreamBuilder<UsersState>(
-      initialData: bloc.state,
-      stream: bloc.stream,
-      builder: (context, snapshot) {
-        final age = snapshot.requireData.currentUser.age;
+    // первый вариант(Provider) использования
+    // final age = context.select((UsersBloc bloc) => bloc.state.currentUser.age);
+    // return Text("$age");
+
+    // второй ваpиатн(BlocProvider) использования
+    return BlocBuilder<UsersBloc, UsersState>(
+      builder: (context, state) {
+        final age = state.currentUser.age;
         return Text("$age");
       },
     );

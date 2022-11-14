@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mvvm_simple/ui/screens/counter/counter_screen.dart';
-import 'package:provider/provider.dart';
 
 import '../../domain/blocs/users_bloc.dart';
 
@@ -14,9 +14,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Provider<UsersBloc>(
+      home: BlocProvider<UsersBloc>(
         create: (_) => UsersBloc(),
-        dispose: (_, value) => value.close(),
         child: const CounterScreen(),
       ),
     );
