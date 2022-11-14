@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Provider(
+      home: Provider<UsersBloc>(
         create: (_) => UsersBloc(),
         dispose: (_, value) => value.close(),
         child: const CounterScreen(),
