@@ -6,8 +6,6 @@ import '../entity/user.dart';
 class UsersState {
   final User currentUser;
 
-//<editor-fold desc="Data Methods">
-
   const UsersState({
     required this.currentUser,
   });
@@ -34,8 +32,6 @@ class UsersState {
       currentUser: currentUser ?? this.currentUser,
     );
   }
-
-//</editor-fold>
 }
 
 abstract class UsersEvents {}
@@ -61,6 +57,7 @@ class UsersBloc {
         .asyncExpand<UsersState>(_mapEventToState)
         .asyncExpand(_updateState)
         .asBroadcastStream();
+    _stateStream.listen((event) {});
     dispatch(UsersInitializeEvent());
   }
 

@@ -16,7 +16,7 @@ class UserDataProvider {
     if (imitationCounter % 2 == 0) {
       await Future<dynamic>.delayed(const Duration(seconds: 1));
     }
-    print(user.age);
+    // print(user.age);
 
     (await sharedPreferences).setInt('age', user.age);
   }
